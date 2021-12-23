@@ -8,5 +8,5 @@ def get_keyboard():
     location_button = KeyboardButton('Отправить геопозицию', request_location=True)
     my_keyboard = ReplyKeyboardMarkup([['Анекдот', 'Начать'],
                                        [contact_button, location_button],
-                                       ['Заполнить анкету']], resize_keyboard=True)  # Добавляем кнопку
+                                       ['Заполнить анкету', 'Я не знаю правил']], resize_keyboard=True)  # Добавляем кнопку
     return my_keyboard

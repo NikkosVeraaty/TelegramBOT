@@ -1,7 +1,9 @@
 # Импорт необходимых компонентов
 from bs4 import BeautifulSoup
-from telegram import ReplyKeyboardRemove, ReplyKeyboardMarkup, ParseMode
+from telegram import ReplyKeyboardRemove, ReplyKeyboardMarkup, ParseMode, InputMediaPhoto
 from telegram.ext import ConversationHandler
+from glob import glob
+from random import choice
 
 from utility import get_keyboard
 import requests
@@ -78,7 +80,8 @@ def anketa_exit_comment(bot, update):
     <b>Возраст:</b> {update.user_data['age']}
     <b>Оценка:</b> {update.user_data['evaluation']}"""
     bot.message.reply_text(text, parse_mode=ParseMode.HTML)  # текстовое сообщение с форматированием HTML
-    bot.message.reply_text('Спасибо!', reply_markup=get_keyboard())  # отправляем сообщение и возвращаем основную клавиатуру
+    bot.message.reply_text('Спасибо!',
+                           reply_markup=get_keyboard())  # отправляем сообщение и возвращаем основную клавиатуру
     return ConversationHandler.END  # выходим из диалога
 
 
@@ -96,3 +99,21 @@ def anketa_comment(bot, update):
 
 def dontknow(bot, update):
     bot.message.reply_text('Я вас не понимаю, выберите оценку на клавиатуре.')
+
+
+# Отправляет набор картинок
+def send_card(bot, update):
+    lists = glob('images/*')  # Создаем список с названиями карточек
+    picture = choice(lists)  # Берем из списка одну карточку
+    media_list = []
+    for i in range(1, len(lists) + 1):
+        media_list.append(InputMediaPhoto(open(f'images/bunkerrules000{i}.jpg', 'rb')))
+    update.bot.send_media_group(chat_id=bot.message.chat.id, media=media_list)  # отправляем картинку
+
+
+# Отправляет одну рандомную картинку
+# def send_card(bot, update):
+#     lists = glob('images/*')  # Создаем список с названиями карточек
+#     picture = choice(lists)  # Берем из списка одну карточку
+#     print(picture)
+#     update.bot.send_photo(chat_id=bot.message.chat.id, photo=open(picture, 'rb'))  # отправляем картинку

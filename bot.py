@@ -13,12 +13,13 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
 def main():
     # Переменная которая позволит нам взаимодействовать с ботом
     my_bot = Updater(BOT_TOKEN)
-
     logging.info('Start bot')  # Добавление свое инфо сообщение
-
     my_bot.dispatcher.add_handler(MessageHandler(Filters.contact, get_contact))  # Обработчик полученного телефона
     my_bot.dispatcher.add_handler(MessageHandler(Filters.contact, get_location))  # Обработчик полученной геопозиции
     my_bot.dispatcher.add_handler(CommandHandler('start', reply_start))  # Обработчик команды start
+
+    my_bot.dispatcher.add_handler(MessageHandler(Filters.regex('Я не знаю правил'), send_card))
+
     my_bot.dispatcher.add_handler(MessageHandler(Filters.regex('Начать'), reply_start))  # Обработчик кнопки
     my_bot.dispatcher.add_handler(MessageHandler(Filters.regex('Анекдот'), get_anecdote))  # Обработчик кнопки
 
