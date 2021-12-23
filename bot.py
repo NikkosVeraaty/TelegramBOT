@@ -2,12 +2,20 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 from handlers import *
 from settings import BOT_TOKEN
+import logging
+
+logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
+                    level=logging.INFO,
+                    filename='bot.log')
 
 
 # Функция которая соединяется с Телеграмом
 def main():
     # Переменная которая позволит нам взаимодействовать с ботом
     my_bot = Updater(BOT_TOKEN)
+
+    logging.info('Start bot')  # Добавление свое инфо сообщение
+
     my_bot.dispatcher.add_handler(MessageHandler(Filters.contact, get_contact))  # Обработчик полученного телефона
     my_bot.dispatcher.add_handler(MessageHandler(Filters.contact, get_location))  # Обработчик полученной геопозиции
     my_bot.dispatcher.add_handler(CommandHandler('start', reply_start))  # Обработчик команды start
